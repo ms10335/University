@@ -1,10 +1,10 @@
 #pragma once
-#include <string>
 #include <list>
 #include <memory>
+#include <string>
 
 struct Student {
-    Student() = default;
+    Student();
     Student(const std::string&, const std::string&, const std::string&, const std::string&, const std::string&, char);
     std::string name_{};
     std::string surname_{};
@@ -12,15 +12,11 @@ struct Student {
     std::string nrIndex_{};
     std::string PESEL_{};
     char gender_{};
-    void setStudentDetails();
 };
-
 
 //class to servie group of students
 class StudentGroup {
 public:
-    StudentGroup(const StudentGroup&) = delete;
-    StudentGroup& operator=(const StudentGroup& ) = delete;
     StudentGroup() = default;
     ~StudentGroup() {
         //czy tutaj nalezy wyczyscis liste ??
@@ -29,11 +25,12 @@ public:
     void printDB() const;
     void searchBySurname() const;
     void searchByPESEL() const;
-    void sortByPESEL() const;
-    void sortBySurname() const;
+    void sortByPESEL();
+    void sortBySurname();
     void deleteByIndex();
     size_t getSize() const;
+    bool compareNumbers(std::shared_ptr<Student> str1, std::shared_ptr<Student> str2);
 
 private:
-    std::list<Student> listStudents{};
+    std::list<std::shared_ptr<Student>> listStudents{};
 };
