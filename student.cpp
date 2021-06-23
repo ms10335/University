@@ -9,7 +9,7 @@ Student::Student(const std::string& name, const std::string& surname, const std:
 Student::Student() {}
 
 void StudentGroup::addNewStudent() {
-  /*  std::shared_ptr<Student> st{new Student};
+    /*  std::shared_ptr<Student> st{new Student};
     std::cout << "Please fill data for new Student: \n";
     std::cout << "Name: ";
     std::cin >> st->name_;
@@ -24,10 +24,10 @@ void StudentGroup::addNewStudent() {
     std::cout << "Gender(just only letter M or K): ";
     std::cin >> st->gender_;
 */
-    listStudents.push_back(std::shared_ptr<Student> {new Student("Ma", "Asomkt","aao", "ss100", "85022714812", 'K')});
-    listStudents.push_back(std::shared_ptr<Student> {new Student("Ma", "Comkt","aao", "ss200", "75022814812", 'K')});
-    listStudents.push_back(std::shared_ptr<Student> {new Student("Ma", "Yomkt","aao", "ss300", "85032714812", 'K')});
-    listStudents.push_back(std::shared_ptr<Student> {new Student("Ma", "Womkt","aao", "ss400", "75022814512", 'K')});
+    listStudents.push_back(std::shared_ptr<Student>{new Student("Ma", "Asomkt", "aao", "ss100", "85022714812", 'K')});
+    listStudents.push_back(std::shared_ptr<Student>{new Student("Ma", "Comkt", "aao", "ss200", "75022814812", 'K')});
+    listStudents.push_back(std::shared_ptr<Student>{new Student("Ma", "Yomkt", "aao", "ss300", "85032714812", 'K')});
+    listStudents.push_back(std::shared_ptr<Student>{new Student("Ma", "Womkt", "aao", "ss400", "75022814512", 'K')});
 
     //listStudents.push_back(st);
 }
@@ -37,18 +37,24 @@ size_t StudentGroup::getSize() const {
 
 void StudentGroup::printDB() const {
     for (auto it = listStudents.begin(); it != listStudents.end(); ++it) {
-        std::cout<<'\n' << (*it)->name_ << ' ' << (*it)->surname_ << '\n'
-                  << (*it)->PESEL_<<' '<<(*it)->nrIndex_<<'\n';
+        std::cout << '\n'
+                  << (*it)->name_ << ' ' << (*it)->surname_ << '\n'
+                  << (*it)->PESEL_ << ' ' << (*it)->nrIndex_ << ' ' << (*it)->gender_ << '\n';
     }
 }
 
+auto StudentGroup::searchByParameter(const std::string& str) const {
+    auto result = std::find_if(listStudents.begin(), listStudents.end(), [&](std::shared_ptr<Student> i) {
+        return i->surname_ == str;
+    });
+    return result;
+}
 void StudentGroup::searchBySurname() const {
     std::string searchName{};
     std::cout << "Podaj szukane nazwisko: \n";
     std::cin >> searchName;
-    auto result = std::find_if(listStudents.begin(), listStudents.end(), [&](std::shared_ptr<Student> i) {
-        return i->surname_ == searchName;
-    });
+    auto result = searchByParameter(searchName);
+
     if (result != listStudents.end()) {
         std::cout << "\nW bazie znaleziono podane nazwisko: ";
     } else {
@@ -60,16 +66,14 @@ void StudentGroup::searchByPESEL() const {
     std::string PESEL{};
     std::cout << "Podaj szukany PESEL: \n";
     std::cin >> PESEL;
-    auto result = std::find_if(listStudents.begin(), listStudents.end(), [&](std::shared_ptr<Student> i) {
-        return i->PESEL_ == PESEL;
-    });
+    auto result = searchByParameter(PESEL);
     if (result != listStudents.end()) {
         std::cout << "\nW bazie znaleziono PESEL: ";
     } else {
         std::cout << "W bazie nie ma podanego nazwiska! ";
     }
 }
-    
+
 struct PESELComparator {
     bool operator()(std::shared_ptr<Student> p1, std::shared_ptr<Student> p2) {
         for (size_t i = 0; i < (p1->PESEL_).length(); i++) {
@@ -83,11 +87,10 @@ struct PESELComparator {
 };
 void StudentGroup::sortByPESEL() {
     listStudents.sort(PESELComparator());
-
 }
-void StudentGroup::sortBySurname()  {
-    listStudents.sort([](std::shared_ptr<Student> p1, std::shared_ptr<Student> p2){
-        if(p1->surname_ == p2->surname_) {
+void StudentGroup::sortBySurname() {
+    listStudents.sort([](std::shared_ptr<Student> p1, std::shared_ptr<Student> p2) {
+        if (p1->surname_ == p2->surname_) {
             return p1->surname_ < p2->surname_;
         }
         return p1->surname_ < p2->surname_;
@@ -97,10 +100,8 @@ void StudentGroup::deleteByIndex() {
     std::string index{};
     std::cout << "Podaj szukany Index: \n";
     std::cin >> index;
-    
-    auto result = std::find_if(listStudents.begin(), listStudents.end(), [&](std::shared_ptr<Student> i) {
-        return i->nrIndex_ == index;
-    });
+
+    auto result = searchByParameter(index);
     if (result != listStudents.end()) {
         std::cout << "\nW bazie znaleziono index: ";
         listStudents.erase(result);

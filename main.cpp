@@ -14,5 +14,8 @@ int main() {
     stg.deleteByIndex();
     stg.printDB();
     std::cout<<"\nSize after deleteing: "<<stg.getSize()<<'\n';
+
+    stg.searchBySurname();
+    stg.printDB();
     return 0;
 }

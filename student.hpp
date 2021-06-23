@@ -26,10 +26,10 @@ public:
     void searchBySurname() const;
     void searchByPESEL() const;
     void sortByPESEL();
-    void sortBySurname();
+    void sortBySurname() ;
     void deleteByIndex();
+    auto searchByParameter(const std::string&) const;
     size_t getSize() const;
-    bool compareNumbers(std::shared_ptr<Student> str1, std::shared_ptr<Student> str2);
 
 private:
     std::list<std::shared_ptr<Student>> listStudents{};
