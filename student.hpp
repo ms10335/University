@@ -31,6 +31,7 @@ public:
     auto searchByParameter(const std::string&) const;
     size_t getSize() const;
 
+
 private:
     std::list<std::shared_ptr<Student>> listStudents{};
 };

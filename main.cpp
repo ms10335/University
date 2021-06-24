@@ -5,7 +5,7 @@ int main() {
     stg.addNewStudent();
     std::cout << stg.getSize();
     stg.printDB();
-    std::cout<<"after sorting\n:";
+    std::cout<<"after sorting:\n";
     stg.sortByPESEL();
     stg.printDB();
     stg.sortBySurname();

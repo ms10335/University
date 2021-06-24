@@ -43,18 +43,16 @@ void StudentGroup::printDB() const {
     }
 }
 
-auto StudentGroup::searchByParameter(const std::string& str) const {
-    auto result = std::find_if(listStudents.begin(), listStudents.end(), [&](std::shared_ptr<Student> i) {
-        return i->surname_ == str;
-    });
-    return result;
-}
 void StudentGroup::searchBySurname() const {
     std::string searchName{};
     std::cout << "Podaj szukane nazwisko: \n";
     std::cin >> searchName;
-    auto result = searchByParameter(searchName);
-
+    auto result = std::find_if(listStudents.begin(), listStudents.end(), [&](std::shared_ptr<Student> st) {
+        if (st->surname_ == searchName) {
+            return true;
+        }
+        return false;
+    });
     if (result != listStudents.end()) {
         std::cout << "\nW bazie znaleziono podane nazwisko: ";
     } else {
@@ -66,7 +64,12 @@ void StudentGroup::searchByPESEL() const {
     std::string PESEL{};
     std::cout << "Podaj szukany PESEL: \n";
     std::cin >> PESEL;
-    auto result = searchByParameter(PESEL);
+    auto result = std::find_if(listStudents.begin(), listStudents.end(), [&](std::shared_ptr<Student> st) {
+        if (st->PESEL_ == PESEL) {
+            return true;
+        }
+        return false;
+    });
     if (result != listStudents.end()) {
         std::cout << "\nW bazie znaleziono PESEL: ";
     } else {
@@ -85,6 +88,7 @@ struct PESELComparator {
         return false;
     }
 };
+
 void StudentGroup::sortByPESEL() {
     listStudents.sort(PESELComparator());
 }
@@ -101,7 +105,12 @@ void StudentGroup::deleteByIndex() {
     std::cout << "Podaj szukany Index: \n";
     std::cin >> index;
 
-    auto result = searchByParameter(index);
+    auto result = std::find_if(listStudents.begin(), listStudents.end(), [&](std::shared_ptr<Student> st) {
+        if (st->nrIndex_ == index) {
+            return true;
+        }
+        return false;
+    });
     if (result != listStudents.end()) {
         std::cout << "\nW bazie znaleziono index: ";
         listStudents.erase(result);
