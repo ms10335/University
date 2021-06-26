@@ -1,8 +1,9 @@
-#include "student.hpp"
 #include <algorithm>
 #include <iostream>
 #include <string>
 #include <vector>
+#include "student.hpp"
+#include "checkPESEL.hpp"
 
 Student::Student(const std::string& name, const std::string& surname, const std::string& address, const std::string& index, const std::string& PESEL, char gender)
     : name_(name), surname_(surname), address_(address), nrIndex_(index), PESEL_(PESEL), gender_(gender) {}
@@ -64,16 +65,23 @@ void StudentGroup::searchByPESEL() const {
     std::string PESEL{};
     std::cout << "Podaj szukany PESEL: \n";
     std::cin >> PESEL;
-    auto result = std::find_if(listStudents.begin(), listStudents.end(), [&](std::shared_ptr<Student> st) {
-        if (st->PESEL_ == PESEL) {
-            return true;
+    //validate PESEL
+    if (checkPESEL(PESEL)) {
+        auto result = std::find_if(listStudents.begin(), listStudents.end(), [&](std::shared_ptr<Student> st) {
+            if (checkPESEL(st->PESEL_)) {
+                if (st->PESEL_ == PESEL) {
+                    return true;
+                }
+            }
+            return false;
+        });
+        if (result != listStudents.end()) {
+            std::cout << "\nW bazie znaleziono PESEL: ";
+        } else {
+            std::cout << "W bazie nie ma podanego nazwiska! ";
         }
-        return false;
-    });
-    if (result != listStudents.end()) {
-        std::cout << "\nW bazie znaleziono PESEL: ";
     } else {
-        std::cout << "W bazie nie ma podanego nazwiska! ";
+        std::cout << "\nPodany Pesel jest błędny!\n";
     }
 }
 
@@ -117,4 +125,13 @@ void StudentGroup::deleteByIndex() {
     } else {
         std::cout << "W bazie nie ma podanego indexu! ";
     }
+}
+std::ostream & operator <<(std::ostream& out, Student* student) {
+
+    out << student->name_<<' '<< student->surname_ << ' ' << student->PESEL_ << ' ' << student->nrIndex_ << '\n'; 
+    return out;
+}
+std::istream & operator >> (std::istream & in,  Student* student) {
+    in >> student->name_ >> student-> surname_ >> student->PESEL_ >> student->nrIndex_;
+    return in;
 }

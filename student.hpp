@@ -26,11 +26,16 @@ public:
     void searchBySurname() const;
     void searchByPESEL() const;
     void sortByPESEL();
-    void sortBySurname() ;
+    void sortBySurname();
     void deleteByIndex();
     auto searchByParameter(const std::string&) const;
     size_t getSize() const;
+    friend std::ostream & operator <<(std::ostream&, Student* );
+    friend std::istream & operator >> (std::istream &,  Student*);
 
+    std::list<std::shared_ptr<Student>> returnList() {
+        return listStudents;
+    }
 
 private:
     std::list<std::shared_ptr<Student>> listStudents{};

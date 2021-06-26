@@ -22,7 +22,7 @@ bool isControlNumberValid(const std::string& pesel) {
     vec.reserve(pesel.size());
     int sum{0};
 
-    for (int i = 0; i < pesel.size(); ++i) {
+    for (size_t i = 0; i < pesel.size(); ++i) {
         vec.push_back(pesel[i] - '0');
     }
 
@@ -131,10 +131,10 @@ bool checkPESEL(const std::string& pesel) {
     return false;
 }
 
-int main() {
-    std::string pesel = "75022714812";
-    bool check = checkPESEL(pesel);
-    std::cout << std::boolalpha <<check << '\n';
+// int main() {
+//     std::string pesel = "75022714812";
+//     bool check = checkPESEL(pesel);
+//     std::cout << std::boolalpha <<check << '\n';
 
-    return 0;
-}
+//     return 0;
+// }
