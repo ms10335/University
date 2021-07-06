@@ -1,10 +1,10 @@
-#include <iostream>
 #include <fstream>
+#include <iostream>
 #include "student.hpp"
 
 int main() {
     StudentGroup stg;
-    stg.addNewStudent();
+    //stg.addNewStudent();
     // std::cout << stg.getSize();
     // stg.printDB();
     // std::cout<<"after sorting:\n";
@@ -16,7 +16,7 @@ int main() {
     // stg.deleteByIndex();
     // stg.printDB();
     // std::cout<<"\nSize after deleteing: "<<stg.getSize()<<'\n';
-
+    /*
     stg.searchByPESEL();
     stg.printDB();
     auto list = stg.returnList();
@@ -26,22 +26,18 @@ int main() {
         out << a;
     }
     out.close();
-    
-    std::ifstream in ("students.txt");
-    Student *student = new Student();
-    while (in) {
-        in >> student;
-        std::cout << student->name_ << student->surname_ << student->PESEL_ << student->nrIndex_;
-        newList.emplace_back(student);
-        student = nullptr;
-    }
-    in.close();
-    delete student;
-    
-    std::cout<<"\nAfter reading from file:" << newList.size()<<'\n';
-    for(auto& a : newList) {
-        std::cout<<a->name_<<' '<<a->surname_<<" " << a->PESEL_ <<' '<<a->nrIndex_<<'\n';
+  */
+
+    std::ifstream inputFile("students.txt");
+    if (inputFile.good()) {
+        stg.returnList() = stg.fillListOfStudents(inputFile);
     }
 
+    std::cout << "\nAfter reading from file:" << stg.returnList().size() << '\n';
+    for (auto& a : stg.returnList()) {
+        std::cout << a->name_ << ' ' << a->surname_ << " " << a->PESEL_ << ' ' << a->nrIndex_ << '\n';
+    }
+
+    inputFile.close();
     return 0;
 }

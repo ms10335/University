@@ -30,6 +30,7 @@ public:
     void deleteByIndex();
     auto searchByParameter(const std::string&) const;
     size_t getSize() const;
+    std::list<std::shared_ptr<Student>> fillListOfStudents(std::istream&);
     friend std::ostream & operator <<(std::ostream&, Student* );
     friend std::istream & operator >> (std::istream &,  Student*);
 

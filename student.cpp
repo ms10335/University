@@ -1,8 +1,8 @@
+#include "student.hpp"
 #include <algorithm>
 #include <iostream>
 #include <string>
 #include <vector>
-#include "student.hpp"
 #include "checkPESEL.hpp"
 
 Student::Student(const std::string& name, const std::string& surname, const std::string& address, const std::string& index, const std::string& PESEL, char gender)
@@ -26,9 +26,9 @@ void StudentGroup::addNewStudent() {
     std::cin >> st->gender_;
 */
     listStudents.push_back(std::shared_ptr<Student>{new Student("Ma", "Asomkt", "aao", "ss100", "85022714812", 'K')});
-    listStudents.push_back(std::shared_ptr<Student>{new Student("Ma", "Comkt", "aao", "ss200", "75022814812", 'K')});
+    listStudents.push_back(std::shared_ptr<Student>{new Student("Ma", "Comkt", "aao", "ss200", "75022814812", 'M')});
     listStudents.push_back(std::shared_ptr<Student>{new Student("Ma", "Yomkt", "aao", "ss300", "85032714812", 'K')});
-    listStudents.push_back(std::shared_ptr<Student>{new Student("Ma", "Womkt", "aao", "ss400", "75022814512", 'K')});
+    listStudents.push_back(std::shared_ptr<Student>{new Student("Ma", "Womkt", "aao", "ss400", "75022814512", 'M')});
 
     //listStudents.push_back(st);
 }
@@ -37,10 +37,15 @@ size_t StudentGroup::getSize() const {
 }
 
 void StudentGroup::printDB() const {
-    for (auto it = listStudents.begin(); it != listStudents.end(); ++it) {
-        std::cout << '\n'
-                  << (*it)->name_ << ' ' << (*it)->surname_ << '\n'
-                  << (*it)->PESEL_ << ' ' << (*it)->nrIndex_ << ' ' << (*it)->gender_ << '\n';
+    if (listStudents.size() != 0) {
+        for (auto it = listStudents.begin(); it != listStudents.end(); ++it) {
+            std::cout << '\n'
+                      << (*it)->name_ << ' ' << (*it)->surname_ << '\n'
+                      << (*it)->PESEL_ << ' ' << (*it)->nrIndex_ << ' ' << (*it)->gender_ << '\n';
+        }
+    }
+    else {
+        std::cout<<"Students Data Base is empty !\n";
     }
 }
 
@@ -126,12 +131,18 @@ void StudentGroup::deleteByIndex() {
         std::cout << "W bazie nie ma podanego indexu! ";
     }
 }
-std::ostream & operator <<(std::ostream& out, Student* student) {
-
-    out << student->name_<<' '<< student->surname_ << ' ' << student->PESEL_ << ' ' << student->nrIndex_ << '\n'; 
+std::ostream& operator<<(std::ostream& out, Student* student) {
+    out << student->name_ << ' ' << student->surname_ << ' ' << student->PESEL_ << ' ' << student->nrIndex_ << '\n';
     return out;
 }
-std::istream & operator >> (std::istream & in,  Student* student) {
-    in >> student->name_ >> student-> surname_ >> student->PESEL_ >> student->nrIndex_;
+std::istream& operator>>(std::istream& in, Student* student) {
+    in >> student->name_ >> student->surname_ >> student->PESEL_ >> student->nrIndex_;
     return in;
+}
+std::list<std::shared_ptr<Student>> StudentGroup::fillListOfStudents(std::istream& file) {
+    Student student;
+    while(file >> &student) {
+        listStudents.push_back(std::make_shared<Student>(student));
+    }
+    return listStudents;
 }

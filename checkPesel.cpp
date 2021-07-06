@@ -89,7 +89,7 @@ int getBirtDay(const std::string& pesel) {
 }
 
 bool checkDay(const std::string& pesel) {
-    if(!checkMonth(pesel)) {
+    if (!checkMonth(pesel)) {
         return false;
     }
     int year = createYear(pesel);
@@ -121,11 +121,11 @@ char getGender(const std::string& pesel) {
 
 bool checkPESEL(const std::string& pesel) {
     //check if pesel has 11 dig and if all are digits
-    if (pesel.size() != 11 || (!isOnlyDigits(pesel))) {
+    if (pesel.size() != 11 || (!isOnlyDigits(pesel) || (!isControlNumberValid(pesel)))) {
         return false;
     }
     //check if controlNUmberisValid
-    if (isControlNumberValid(pesel) && checkDay(pesel) ) {
+    if (checkDay(pesel)) {
         return true;
     }
     return false;
