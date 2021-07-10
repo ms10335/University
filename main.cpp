@@ -62,23 +62,23 @@ int main() {
             break;
         case 9: {
             std::cout << "Zapis listy do pliku:\n";
-            auto list = stg.returnList();
-            if (list.size() != 0) {
+            if (stg.returnList().size() != 0) {
                 std::ofstream out("students.txt");
-                for (auto& a : list) {
+                for (auto& a : stg.returnList()) {
                     out << a;
                 }
                 out.close();
             } else {
                 std::cout << " Lista jest pusta !\n";
             }
+            
             break;
         }
         case 10: {
             std::cout << "Odczyt z pliku: \n";
             std::ifstream inputFile("students.txt");
             if (inputFile.good()) {
-                stg.returnList() = stg.fillListOfStudents(inputFile);
+                stg.fillListOfStudents(inputFile);
                 stg.printDB();
                 inputFile.close();
             } else {
@@ -101,26 +101,6 @@ int main() {
 }
 
 /*
-    auto list = stg.returnList();
-    std::ofstream out("students.txt");
-    std::list<std::shared_ptr<Student>> newList;
-    for(auto& a : list) {
-        out << a;
-    
-    out.close();
-        std::ifstream inputFile("students.txt");
-    if (inputFile.good()) {
-        std::cout<<"FILE exists!\n";
-        stg.returnList() = stg.fillListOfStudents(inputFile);
-    }
-
-    std::cout << "\nAfter reading from file:" << stg.returnList().size() << '\n';
-    for (auto& a : stg.returnList()) {
-        std::cout << a->name_ << ' ' << a->surname_ << " " << a->PESEL_ << ' ' << a->nrIndex_ << '\n';
-    }
-
-    inputFile.close();
-
 80011503512
 65061087807
 01270940111
