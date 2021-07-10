@@ -1,16 +1,18 @@
-#include "student.hpp"
 #include <algorithm>
 #include <iostream>
 #include <string>
 #include <vector>
+#include <iterator>
+#include "student.hpp"
 #include "checkPESEL.hpp"
 
 Student::Student(const std::string& name, const std::string& surname, const std::string& address, const std::string& index, const std::string& PESEL, char gender)
     : name_(name), surname_(surname), address_(address), nrIndex_(index), PESEL_(PESEL), gender_(gender) {}
-Student::Student() {}
+Student::Student()
+    : name_(""), surname_(""), address_(""), nrIndex_(""), PESEL_(""), gender_(' ') {}
 
 void StudentGroup::addNewStudent() {
-    /*  std::shared_ptr<Student> st{new Student};
+    std::shared_ptr<Student> st{new Student};
     std::cout << "Please fill data for new Student: \n";
     std::cout << "Name: ";
     std::cin >> st->name_;
@@ -22,15 +24,50 @@ void StudentGroup::addNewStudent() {
     std::cin >> st->nrIndex_;
     std::cout << "PESEL: ";
     std::cin >> st->PESEL_;
+    if (!checkPESEL(st->PESEL_)) {
+        while (!checkPESEL(st->PESEL_)) {
+            std::cout << "Popraw Numer Pesel\n";
+            std::cin >> st->PESEL_;
+            while (checkIsPeselExistinDB(st->PESEL_)) {
+                std::cout << "Podany Numer Pesel jest w Bazie Danych, Prosze podaj Inny\n";
+                std::cin >> st->PESEL_;
+            }
+        }
+    } else {
+        while (checkIsPeselExistinDB(st->PESEL_)) {
+            std::cout << "Podany Numer Pesel jest w Bazie Danych, Prosze podaj Inny\n";
+            std::cin >> st->PESEL_;
+        }
+    }
     std::cout << "Gender(just only letter M or K): ";
     std::cin >> st->gender_;
-*/
+    /*
     listStudents.push_back(std::shared_ptr<Student>{new Student("Ma", "Asomkt", "aao", "ss100", "85022714812", 'K')});
     listStudents.push_back(std::shared_ptr<Student>{new Student("Ma", "Comkt", "aao", "ss200", "75022814812", 'M')});
     listStudents.push_back(std::shared_ptr<Student>{new Student("Ma", "Yomkt", "aao", "ss300", "85032714812", 'K')});
     listStudents.push_back(std::shared_ptr<Student>{new Student("Ma", "Womkt", "aao", "ss400", "75022814512", 'M')});
 
     //listStudents.push_back(st);
+  */
+    listStudents.emplace_back(st);
+}
+std::shared_ptr<Student> StudentGroup::createStudent() {
+    std::shared_ptr<Student> newStudent{};
+
+    return newStudent;
+}
+
+bool StudentGroup::checkIsPeselExistinDB(const std::string& peselToFind) {
+    //std::string temp = checkPESEL;
+
+    auto result = std::find_if(listStudents.begin(), listStudents.end(), [&](std::shared_ptr<Student> st) {
+        return st->PESEL_ == peselToFind;
+    });
+    if(result != listStudents.end()) {
+        return true;
+    }
+    return false;
+
 }
 size_t StudentGroup::getSize() const {
     return listStudents.size();
@@ -43,9 +80,8 @@ void StudentGroup::printDB() const {
                       << (*it)->name_ << ' ' << (*it)->surname_ << '\n'
                       << (*it)->PESEL_ << ' ' << (*it)->nrIndex_ << ' ' << (*it)->gender_ << '\n';
         }
-    }
-    else {
-        std::cout<<"Students Data Base is empty !\n";
+    } else {
+        std::cout << "Students Data Base is empty !\n";
     }
 }
 
@@ -60,7 +96,8 @@ void StudentGroup::searchBySurname() const {
         return false;
     });
     if (result != listStudents.end()) {
-        std::cout << "\nW bazie znaleziono podane nazwisko: ";
+        std::cout << "\nW bazie znaleziono podane nazwisko:\n"
+                  << *result;
     } else {
         std::cout << "W bazie nie ma podanego nazwiska! " << *result << '\n';
     }
@@ -73,23 +110,20 @@ void StudentGroup::searchByPESEL() const {
     //validate PESEL
     if (checkPESEL(PESEL)) {
         auto result = std::find_if(listStudents.begin(), listStudents.end(), [&](std::shared_ptr<Student> st) {
-            if (checkPESEL(st->PESEL_)) {
-                if (st->PESEL_ == PESEL) {
-                    return true;
-                }
+            if (st->PESEL_ == PESEL) {
+                return true;
             }
             return false;
         });
         if (result != listStudents.end()) {
-            std::cout << "\nW bazie znaleziono PESEL: ";
+            std::cout << "\nW bazie znaleziono PESEL: " << *result;
         } else {
-            std::cout << "W bazie nie ma podanego nazwiska! ";
+            std::cout << "W bazie nie ma nazwiska o podanym numerze PESEL!\n ";
         }
     } else {
         std::cout << "\nPodany Pesel jest błędny!\n";
     }
 }
-
 struct PESELComparator {
     bool operator()(std::shared_ptr<Student> p1, std::shared_ptr<Student> p2) {
         for (size_t i = 0; i < (p1->PESEL_).length(); i++) {
@@ -141,7 +175,7 @@ std::istream& operator>>(std::istream& in, Student* student) {
 }
 std::list<std::shared_ptr<Student>> StudentGroup::fillListOfStudents(std::istream& file) {
     Student student;
-    while(file >> &student) {
+    while (file >> &student) {
         listStudents.push_back(std::make_shared<Student>(student));
     }
     return listStudents;

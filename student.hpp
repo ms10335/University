@@ -28,8 +28,9 @@ public:
     void sortByPESEL();
     void sortBySurname();
     void deleteByIndex();
-    auto searchByParameter(const std::string&) const;
+    std::shared_ptr<Student> createStudent();
     size_t getSize() const;
+    bool checkIsPeselExistinDB(const std::string&);
     std::list<std::shared_ptr<Student>> fillListOfStudents(std::istream&);
     friend std::ostream & operator <<(std::ostream&, Student* );
     friend std::istream & operator >> (std::istream &,  Student*);
