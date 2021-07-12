@@ -32,7 +32,7 @@ public:
     size_t getSize() const;
     bool checkIsPeselExistinDB(const std::string&);
     void fillListOfStudents(std::istream&);
-    friend std::ostream & operator <<(std::ostream&, Student* );
+    friend std::ostream & operator <<(std::ostream&, Student*);
     friend std::istream & operator >> (std::istream &,  Student*);
 
     std::list<std::shared_ptr<Student>> returnList() {

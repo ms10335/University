@@ -165,17 +165,17 @@ void StudentGroup::deleteByIndex() {
         std::cout << "W bazie nie ma podanego indexu! ";
     }
 }
-std::ostream& operator<<(std::ostream& out, std::shared_ptr<Student> student) {
+std::ostream& operator<<(std::ostream& out, Student* student) {
     out << student->name_ << ' ' << student->surname_ << ' ' << student->address_ << ' ' << student->nrIndex_ << ' ' << student->PESEL_ <<' '<<student->gender_ <<'\n';
     return out;
 }
-std::istream& operator>>(std::istream& in, std::shared_ptr<Student> student) {
+std::istream& operator>>(std::istream& in, Student* student) {
     in >> student->name_ >> student->surname_ >> student->address_ >> student->nrIndex_ >> student->PESEL_ >> student->gender_;
     return in;
 }
 void StudentGroup::fillListOfStudents(std::istream& file) {
-    Student student;
-    while (file >> &student) {
-        listStudents.push_back(std::make_shared<Student>(student));
+    Student* student = new Student;
+    while (file >> student) {
+        listStudents.push_back(std::shared_ptr<Student>(student));
     }
 }
