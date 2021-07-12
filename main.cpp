@@ -26,41 +26,41 @@ int main() {
         std::cout << " 9 -> Zapis do pliku, 10 -> Odczyt z pliku, 11 -> koniec\n";
         std::cin >> makeChoice;
         switch (makeChoice) {
-        case 1:
+        case add:
             std::cout << "Dodaje studenta: \n";
             stg.addNewStudent();
             break;
-        case 2:
+        case sizeDb:
             std::cout << "Wielkość bazy studentów: " << stg.getSize() << '\n';
             break;
-        case 3:
+        case printDb:
             std::cout << "Wydrukuj liste studentow: \n";
             stg.printDB();
             break;
-        case 4:
+        case searchBySurname:
             std::cout << "Wyszukiwanie po nazwisku:\n";
             stg.searchBySurname();
             break;
-        case 5:
+        case searchByPesel:
             std::cout << "Wyszukiwanie po PESEL'u:\n";
             stg.searchByPESEL();
             break;
-        case 6:
+        case sortByPesel:
             std::cout << "Sortowanie po PESEL'u i Wyświetlenie DB:\n";
             stg.sortByPESEL();
             stg.printDB();
             break;
-        case 7:
+        case sortBySurname:
             std::cout << "Sortowanie po Naziwku i Wyświetlenie DB:\n";
             stg.sortBySurname();
             stg.printDB();
             break;
-        case 8:
+        case deleteByIndex:
             std::cout << "Usuniecie z DB studenta i wyswieltenie DB:\n";
             stg.deleteByIndex();
             stg.printDB();
             break;
-        case 9: {
+        case writeToFile: {
             std::cout << "Zapis listy do pliku:\n";
             if (stg.returnList().size() != 0) {
                 std::ofstream out("students.txt");
@@ -71,10 +71,9 @@ int main() {
             } else {
                 std::cout << " Lista jest pusta !\n";
             }
-            
             break;
         }
-        case 10: {
+        case readFromFile: {
             std::cout << "Odczyt z pliku: \n";
             std::ifstream inputFile("students.txt");
             if (inputFile.good()) {
@@ -86,7 +85,7 @@ int main() {
             }
             break;
         }
-        case 11:
+        case koniec:
             std::cout << "Koniec pracy:\n";
             isOpenDb = false;
             break;
