@@ -1,5 +1,5 @@
 #pragma once
-#include <list>
+#include <vector>
 #include <memory>
 #include <string>
 
@@ -12,6 +12,8 @@ struct Student {
     std::string nrIndex_{};
     std::string PESEL_{};
     char gender_{};
+    friend std::ostream& operator<<(std::ostream&, const Student&);
+    friend std::istream& operator>>(std::istream&, Student&);
 };
 
 //class to servie group of students
@@ -32,13 +34,9 @@ public:
     size_t getSize() const;
     bool checkIsPeselExistinDB(const std::string&);
     void fillListOfStudents(std::istream&);
-    friend std::ostream & operator <<(std::ostream&, Student*);
-    friend std::istream & operator >> (std::istream &,  Student*);
-
-    std::list<std::shared_ptr<Student>> returnList() {
+    std::vector<std::shared_ptr<Student>> returnList() {
         return listStudents;
     }
-
 private:
-    std::list<std::shared_ptr<Student>> listStudents{};
+    std::vector<std::shared_ptr<Student>> listStudents{};
 };

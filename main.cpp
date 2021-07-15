@@ -61,16 +61,17 @@ int main() {
             stg.printDB();
             break;
         case writeToFile: {
-            std::cout << "Zapis listy do pliku:\n";
+             std::cout << "Zapis listy do pliku:\n";
             if (stg.returnList().size() != 0) {
                 std::ofstream out("students.txt");
-                for (auto& a : stg.returnList()) {
-                    out << a;
+                for (auto a : stg.returnList()) {
+                     out << (*(a.get())) ;
                 }
                 out.close();
             } else {
                 std::cout << " Lista jest pusta !\n";
-            }
+             }
+           
             break;
         }
         case readFromFile: {

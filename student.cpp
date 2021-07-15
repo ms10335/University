@@ -41,21 +41,8 @@ void StudentGroup::addNewStudent() {
     }
     std::cout << "Gender(just only letter M or K): ";
     std::cin >> st->gender_;
-    /*
-    listStudents.push_back(std::shared_ptr<Student>{new Student("Ma", "Asomkt", "aao", "ss100", "85022714812", 'K')});
-    listStudents.push_back(std::shared_ptr<Student>{new Student("Ma", "Comkt", "aao", "ss200", "75022814812", 'M')});
-    listStudents.push_back(std::shared_ptr<Student>{new Student("Ma", "Yomkt", "aao", "ss300", "85032714812", 'K')});
-    listStudents.push_back(std::shared_ptr<Student>{new Student("Ma", "Womkt", "aao", "ss400", "75022814512", 'M')});
-
-    //listStudents.push_back(st);
-  */
     listStudents.emplace_back(st);
 }
-// std::shared_ptr<Student> StudentGroup::createStudent() {
-//     std::shared_ptr<Student> newStudent{};
-
-//     return newStudent;
-// }
 
 bool StudentGroup::checkIsPeselExistinDB(const std::string& peselToFind) {
     //std::string temp = checkPESEL;
@@ -137,10 +124,10 @@ struct PESELComparator {
 };
 
 void StudentGroup::sortByPESEL() {
-    listStudents.sort(PESELComparator());
+    std::sort(listStudents.begin(), listStudents.end(), PESELComparator());
 }
 void StudentGroup::sortBySurname() {
-    listStudents.sort([](std::shared_ptr<Student> p1, std::shared_ptr<Student> p2) {
+    std::sort(listStudents.begin(),listStudents.end(), [](std::shared_ptr<Student> p1, std::shared_ptr<Student> p2) {
         if (p1->surname_ == p2->surname_) {
             return p1->surname_ < p2->surname_;
         }
@@ -165,17 +152,18 @@ void StudentGroup::deleteByIndex() {
         std::cout << "W bazie nie ma podanego indexu! ";
     }
 }
-std::ostream& operator<<(std::ostream& out, Student* student) {
-    out << student->name_ << ' ' << student->surname_ << ' ' << student->address_ << ' ' << student->nrIndex_ << ' ' << student->PESEL_ <<' '<<student->gender_ <<'\n';
+std::ostream& operator<<(std::ostream& out, const Student& student) {
+    out << student.name_ << ' ' << student.surname_ << ' ' << student.address_ << ' ' << student.nrIndex_ << ' ' << student.PESEL_ <<' '<<student.gender_ <<'\n';
     return out;
 }
-std::istream& operator>>(std::istream& in, Student* student) {
-    in >> student->name_ >> student->surname_ >> student->address_ >> student->nrIndex_ >> student->PESEL_ >> student->gender_;
+
+std::istream& operator>>(std::istream& in, Student& student) {
+    in >> student.name_ >> student.surname_ >> student.address_ >> student.nrIndex_ >> student.PESEL_ >> student.gender_;
     return in;
 }
 void StudentGroup::fillListOfStudents(std::istream& file) {
-    Student* student = new Student;
+    Student student;
     while (file >> student) {
-        listStudents.push_back(std::shared_ptr<Student>(student));
+        listStudents.push_back(std::make_shared<Student>(student));
     }
 }
